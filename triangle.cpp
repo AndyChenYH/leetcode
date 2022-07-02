@@ -10,6 +10,8 @@
 #define E exit(0)
 #define F function
 #define V vector
+#define mset multiset
+#define mmap multimap
 #define pii pair<int, int>
 #define tiii trip<int, int, int>
 #define ll long long
@@ -19,27 +21,38 @@
 #define MOD 1000000007
 #define INF (2147483647 / 2)
 #define printf(args...) fprintf(stderr, ##args)
-#define TLE throw logic_error("oops")
 using namespace std;
 
-int LN;
-V<int> arr;
-set<V<int>> res;
+/*
+     [2],
+    [3,4],
+   [6,5,7],
+  [4,1,8,3]
+*/
+V<V<int>> tri;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
-			}
+	tri = {
+		{2},
+		{3, 4},
+		{6, 5, 7},
+		{4, 1, 8, 3},
+	};
+	map<pii, int> mem = {};
+	F<int(int, int)> dp = [&] (int i, int j) -> int {
+		auto fii = mem.find({i, j});
+		if (fii != mem.end()) {
+			return fii->se;
 		}
-	}
-	db(res);
-	return 0;
+		if (i == int(tri.size()) - 1) {
+			return tri[i][j];
+		}
+		int a = dp(i + 1, j);
+		int b = dp(i + 1, j + 1);
+		int res = min(a, b) + tri[i][j];
+		mem.insert({{i, j}, res});
+		return res;
+	};
+	int rr = dp(0, 0);
+	db(mem);
+	db(rr);	
 }

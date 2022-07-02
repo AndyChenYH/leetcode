@@ -18,28 +18,32 @@
 #define db(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
 #define MOD 1000000007
 #define INF (2147483647 / 2)
-#define printf(args...) fprintf(stderr, ##args)
 #define TLE throw logic_error("oops")
 using namespace std;
 
 int LN;
-V<int> arr;
-set<V<int>> res;
+V<pii> tms;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
-			}
+	tms = {{1, 13}, {13, 15}};
+	LN = tms.size();
+	sort(tms.begin(), tms.end());
+	int L = 0;
+	int mx = -INF, cur = 0;
+	auto cmp = [&] (pii a, pii b) -> bool { return a.se < b.se; };
+	set<pii, decltype(cmp)> win(cmp);
+	for (pii pp : tms) {
+		win.insert(pp);
+		cur ++;
+		L = pp.fi;
+		while (win.begin()->se <= L) { 
+			win.erase(win.begin()); 
+			cur --;
 		}
+		db(cur, L, win);
+		mx = max(mx, cur);
 	}
-	db(res);
+	db(mx);
 	return 0;
 }
+
+

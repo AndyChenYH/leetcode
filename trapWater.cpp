@@ -23,23 +23,38 @@
 using namespace std;
 
 int LN;
-V<int> arr;
-set<V<int>> res;
+V<int> ele;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
+	ele = {7, 0, 4, 0, 3, 0, 2, 0, 6, 0, 8, 0, 2};
+	LN = ele.size();
+	int tot = 0, blk = 0; 
+	int li = 0, ri = 0;
+	auto sol = [&] () -> void {
+		while (ri < LN) {
+			if (li == ri) {
+				ri ++;
+				continue;
 			}
+			if (ele[li] <= ele[ri]) {
+				tot += (ri - li - 1) * ele[li] - blk;
+				li = ri;
+				blk = 0;
+			}
+			else {
+				blk += ele[ri];
+			}
+			ri ++;
 		}
+	};
+	sol();
+	if (blk != 0) {
+		ele = V<int>(ele.begin() + li, ele.begin() + ri);
+		reverse(ele.begin(), ele.end());
+		blk = 0;
+		li = ri = 0;
+		LN = ele.size();
+		sol();
 	}
-	db(res);
+	db(tot, blk, li, ri);
 	return 0;
 }

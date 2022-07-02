@@ -18,28 +18,39 @@
 #define db(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
 #define MOD 1000000007
 #define INF (2147483647 / 2)
-#define printf(args...) fprintf(stderr, ##args)
 #define TLE throw logic_error("oops")
 using namespace std;
 
 int LN;
 V<int> arr;
-set<V<int>> res;
-int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
-			}
-		}
+unordered_map<pii, int> mem;
+int dp(int i, int j) {
+	if (mem.find({i, j}) != mem.end()) { return mem.at({i, j}); }
+	int val = 0;
+	if (i != 0) {
+		val += abs(arr[i - 1] - arr[j]) - abs(arr[i - 1] - arr[i]);	
 	}
-	db(res);
+	if (j != LN - 1) {
+		val += abs(arr[j + 1] - arr[i]) - abs(arr[j + 1] - arr[j]);
+	}
+	if (i == j) { return val; }
+	int a = dp(i + 1, j);
+	int b = dp(i, j - 1);
+
+	int r = max(val, max(a, b));
+	mem.insert({{i, j}, r});
+	return r;
+}
+int main() {
+	arr = {2, 4, 9, 24, 2, 1, 10};
+	LN = arr.size();
+	mem = {};
+	int sm = 0;
+	for (int i = 0; i < LN - 1; i ++) {
+		sm += abs(arr[i + 1] - arr[i]);
+	}
+	int r = dp(0, LN - 1);
+	sm += r;
+	db(sm);
 	return 0;
 }

@@ -18,28 +18,35 @@
 #define db(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
 #define MOD 1000000007
 #define INF (2147483647 / 2)
-#define printf(args...) fprintf(stderr, ##args)
 #define TLE throw logic_error("oops")
 using namespace std;
 
 int LN;
-V<int> arr;
-set<V<int>> res;
+int tar;
+V<int> r_arr;
+V<pii> arr;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
+	tar = 6;
+	r_arr =  {3, 2, 4};
+	LN = r_arr.size();
+	arr = V<pii>(LN);
 	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
-			}
-		}
+		arr[i] = {r_arr[i], i};
 	}
-	db(res);
+	sort(arr.begin(), arr.end(), [&] (pii a, pii b) -> bool { return a.fi < b.fi; });
+	db(arr);
+	auto sol = [&] () -> pii {
+		for (int i = 0; i < LN; i ++) {
+			auto cmp = [&] (pii a, int b) -> bool { return a.fi < b; };
+			int o = lower_bound(arr.begin(), arr.end(), tar - arr[i].fi, cmp) - arr.begin();
+			if (o != LN && o != i && arr[o].fi + arr[i].fi == tar) {
+				return {arr[i].se, arr[o].se};
+				break;
+			}	
+		}	
+		return {-1, -1};
+	};
+	pii rr = sol();
+	db(rr);
 	return 0;
 }

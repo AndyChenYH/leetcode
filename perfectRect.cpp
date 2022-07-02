@@ -18,28 +18,41 @@
 #define db(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
 #define MOD 1000000007
 #define INF (2147483647 / 2)
-#define printf(args...) fprintf(stderr, ##args)
 #define TLE throw logic_error("oops")
 using namespace std;
 
-int LN;
-V<int> arr;
-set<V<int>> res;
+struct Rt {
+	int x1, y1, x2, y2;
+};
+
+int LR;
+V<Rt> rts;
+V<V<int>> r_rts;
+V<pii> ptx, pty;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
-			}
-		}
+	r_rts = {
+		{1, 2, 3, 3},
+		{3, 1, 4, 2},
+		{3, 2, 4, 4},
+		{1, 3, 2, 4},
+		{2, 3, 3, 4},
+	};
+	LR = r_rts.size();
+	rts = V<int>(LR);
+	for (int i = 0; i < LR; i ++) {
+		rts[i] = {r_rts[0], r_rts[1], r_rts[2], r_rts[3]};
 	}
-	db(res);
+	ptx = {};
+	for (Rt r : rts) {
+		ptx.psb({r.x1, r.y1});
+		ptx.psb({r.x1, r.y2});
+		ptx.psb({r.x2, r.y1});
+		ptx.psb({r.x2. r.y2});
+	}
+	pty = ptx;
+	sort(ptx.begin(), ptx.end());
+
+	sort(pty.begin(), pty.end(), [&] (pii a, pii b) -> bool { return a.se < b.se; });
+			
 	return 0;
 }

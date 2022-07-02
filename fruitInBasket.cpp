@@ -20,26 +20,35 @@
 #define INF (2147483647 / 2)
 #define printf(args...) fprintf(stderr, ##args)
 #define TLE throw logic_error("oops")
-using namespace std;
+using namespace std; 
 
 int LN;
-V<int> arr;
-set<V<int>> res;
+V<int> ts;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
+	ts = {1, 2, 1};
+	LN = ts.size();
+	int li = 0, ri = 0;
+	unordered_map<int, int> mp = {};
+	int mx = -1e9;
+	while (ri < LN) {
+		if (mp.find(ts[ri]) != mp.end()) {
+			mp.at(ts[ri]) ++;
+		}
+		else {
+			mp.insert({ts[ri], 1});
+		}
+		if (2 < mp.size()) {
+			while (2 < mp.size()) {
+				mp.at(ts[li]) --;
+				if (mp.at(ts[li]) == 0) {
+					mp.erase(mp.find(ts[li]));
+				}
+				li ++;
 			}
 		}
+		mx = max(mx, ri - li + 1);
+		ri ++;
 	}
-	db(res);
+	db(mx);
 	return 0;
 }

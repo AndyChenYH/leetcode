@@ -1,34 +1,55 @@
 #include <bits/stdc++.h>
+#include "utils.cpp"
+#define itr iterator
+#define psb push_back
+#define mkp make_pair
+#define mkt make_trip
+#define fir first
+#define sec second
+#define thi third
+#define E exit(0)
+#define F function
+#define V vector
+#define bt cerr << "line " << __LINE__ << endl
+#define db(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
+#define MOD 1000000007
+#define printf(args...) fprintf(stderr, ##args)
+#define INF (2147483647 / 2)
 using namespace std;
+typedef pair<int, int> pii;
+typedef long long ll;
+typedef string S;
 
 int main() {
-	//						0 1 2 3 4 5
-	vector<int> ar = {5,7,8,8,8,10};
-	int t = 8;
-	int N = ar.size();
-	vector<int> res(2);
-	for (int ct = 0; ct < 2; ct ++) {
-		int l = 0, r = N - 1, ans = -1;
-		while (l <= r) {
-			int m = l + (r - l) / 2;
-			if (ct == 0) {
-				if (ar[m] <= t) {
-					ans = m;
-					l = m + 1;
-				}
-				else r = m - 1;
-			}
-			else {
-				if (t <= ar[m]) {
-					ans = m;
-					r = m - 1;
-				}
-				else l = m + 1;
-			}
+	int tar = 7;
+	V<int> arr = {7,7,7,7,7,7,7,7,7};
+	int L = 0, R = arr.size() - 1;
+	// finding right pos
+	while (L <= R) {
+		int mid = L + (R - L) / 2;	
+		if (arr[mid] == tar && (mid == (int) arr.size() - 1 || arr[mid + 1] != tar)) { 
+			db(mid);
+			break; 
 		}
-		if (ans != -1 && ar[ans] != t) ans = -1;
-		res[ct] = ans;
+		else if (tar < arr[mid]) {
+			R = mid - 1;	
+		}
+		else if (arr[mid] <= tar) {
+			L = mid + 1;
+		}
 	}
-	swap(res[0], res[1]);
-	printf("%d %d\n", res[0], res[1]);
+	L = 0, R = arr.size() - 1;
+	while (L <= R) {
+		int mid = L + (R - L) / 2;
+		if (arr[mid] == tar && (mid == 0 || arr[mid - 1] != tar)) {
+			db(mid);
+			break;
+		}
+		else if (arr[mid] < tar) {
+			L = mid + 1;
+		}
+		else if (tar <= arr[mid]) {
+			R = mid - 1;
+		}
+	}
 }

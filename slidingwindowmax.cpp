@@ -10,8 +10,9 @@
 #define E exit(0)
 #define F function
 #define V vector
+#define mset multiset
+#define mmap multimap
 #define pii pair<int, int>
-#define tiii trip<int, int, int>
 #define ll long long
 #define S string
 #define bt cerr << "line " << __LINE__ << endl
@@ -19,26 +20,26 @@
 #define MOD 1000000007
 #define INF (2147483647 / 2)
 #define printf(args...) fprintf(stderr, ##args)
-#define TLE throw logic_error("oops")
 using namespace std;
 
-int LN;
+int LA;
+int K;
 V<int> arr;
-set<V<int>> res;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
-			}
-		}
+	K = 4;
+	arr = {-7,-8,7,5,7,1,6,0};
+	LA = arr.size();
+	auto cmp = [&] (int a, int b) -> bool { return a > b; };
+	mset<int, decltype(cmp)> win(cmp);
+	for (int i = 0; i < K; i ++) {
+		win.insert(arr[i]);
+	}	
+	V<int> res = {};
+	res.psb(*win.begin());
+	for (int i = K; i < LA; i ++) {
+		win.insert(arr[i]);
+		win.erase(win.find(arr[i - K]));
+		res.psb(*win.begin());
 	}
 	db(res);
 	return 0;

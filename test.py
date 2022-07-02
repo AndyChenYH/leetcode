@@ -1,28 +1,26 @@
 
-ct = 0
-for i in range(5):
-    for j in range(i, 5):
-        for k in range(j, 5):
-            ct += 1
-print("first: ", ct)
-ct = 0
-
-lVar = [0, 0, 0, 0]
-end = [0, 0, 0, 0]
-lNum = len(lVar) - 1
-while True:
-    print(lVar)
-    ct += 1
-    G1 = False
-    for i in range(lNum, -1, -1):
-        lVar[i] += 1
-        if lVar[i] == end[i] + 1:
-            if i == 0:
-                G1 = True
-                break
-            else: 
-                lVar[i] = 0
-        else: break
-    if G1: break
-print(ct)
-
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from math import *
+MN = 1000;
+mnl = mxr = [];
+def ser(n, d, x):
+    mnl[d] = min(mnl[d], x);
+    mxr[d] = max(mxr[d], x);
+    if (n.left != None):
+        ser(n.left, d + 1, x * 2 - 1);
+    if (n.right != None):
+        ser(n.right, d + 1, x * 2);
+class Solution:
+    def widthOfBinaryTree(self, root: TreeNode) -> int:
+        mnl = [inf for i in range(MN)];
+        mxr = [-inf for i in range(MN)];
+        ser(root, 0, 1);
+        mx = -inf;
+        for i in range(MN):
+            mx = max(mx, mxr[i] - mnl[i] + 1);
+        return mx;

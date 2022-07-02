@@ -10,8 +10,9 @@
 #define E exit(0)
 #define F function
 #define V vector
+#define mset multiset
 #define pii pair<int, int>
-#define tiii trip<int, int, int>
+#define tii trip<int, int, int>
 #define ll long long
 #define S string
 #define bt cerr << "line " << __LINE__ << endl
@@ -19,27 +20,30 @@
 #define MOD 1000000007
 #define INF (2147483647 / 2)
 #define printf(args...) fprintf(stderr, ##args)
-#define TLE throw logic_error("oops")
 using namespace std;
 
-int LN;
-V<int> arr;
-set<V<int>> res;
+
+int NL, K;
+S ss;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
-	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
-			}
+	K = 1;
+	ss = "AABABBA";
+	NL = ss.size();
+	map<char, int> occ = {};
+	int L = 0, R = 0;
+	while (R < NL) {
+		auto fii = occ.find(ss[R]);
+		if (fii == occ.end()) {
+			occ.insert({ss[R], 1});
 		}
+		else {
+			fii->se ++;
+		}
+		if (occ.size() <= 2) {
+					
+		}
+
 	}
-	db(res);
+	
 	return 0;
 }

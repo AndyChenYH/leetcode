@@ -18,28 +18,31 @@
 #define db(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
 #define MOD 1000000007
 #define INF (2147483647 / 2)
-#define printf(args...) fprintf(stderr, ##args)
 #define TLE throw logic_error("oops")
 using namespace std;
 
 int LN;
+int tar;
 V<int> arr;
-set<V<int>> res;
 int main() {
-	arr = {-4, -1, -1, 0, 0, 0, 1, 2};
-	sort(arr.begin(), arr.end());
-	db(arr);
+	tar = 5;
+	arr = {1, 2, 3, 4, 5};
 	LN = arr.size();
-	for (int i = 0; i < LN; i ++) {
-		for (int j = i + 1; j < LN; j ++) {
-			int g = 0 - (arr[i] + arr[j]);
-			int o = lower_bound(arr.begin() + j + 1, arr.end(), g) - arr.begin();
-			if (o != LN && arr[i] + arr[j] + arr[o] == 0) {
-				V<int> r = {arr[i], arr[j], arr[o]};
-				res.insert(r);
-			}
+	int li = 0, ri = 0;
+	int win = 0;
+	int ct = 0;
+	while (ri < LN) {
+		win += arr[ri];
+		db(win, li, ri);
+		if (win == tar) {
+			ct ++;
 		}
-	}
-	db(res);
+		if (tar < win) {
+			win -= arr[li];
+			li ++;
+		}
+		ri ++;
+	}	
+	db(ct);
 	return 0;
 }
