@@ -1,10 +1,10 @@
 #include <vector>
+#include <functional>
 #include "../utils.cpp"
 #include <iostream>
 using namespace std;
 
 // solution 1:
-/*
 vector<vector<int>> permute(vector<int> ar) {
 	if (ar.size() == 1) return {ar};
 	vector<vector<int>> res;
@@ -21,13 +21,8 @@ vector<vector<int>> permute(vector<int> ar) {
 
 }
 
-int main() {
-	vector<int> ar = {0, 1};
-	auto p = permute(ar);
-	db(p);
-}
-*/
 
+/*
 vector<vector<int>> permute(vector<int>& ar) {
 	vector<vector<int>> res;
 	function<void(int)> sol = [&] (int i) {
@@ -45,8 +40,10 @@ vector<vector<int>> permute(vector<int>& ar) {
 	return res;
 
 }
+*/
 int main() {
-	vector<int> ar = {1, 2, 3, 4, 5, 6};
+	vector<int> ar = {1, 2, 3, 4};
 	auto p = permute(ar);
 	db(p);
+	db(p.size());
 }
