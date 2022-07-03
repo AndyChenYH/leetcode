@@ -18,6 +18,6 @@ string perm(vector<int> v, int k) {
 }
 
 int main() {
-	string res = perm({1, 2, 3, 4}, 9);
+	string res = perm({1, 2, 3}, 2);
 	puts(res.c_str());
 }
