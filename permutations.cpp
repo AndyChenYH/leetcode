@@ -44,6 +44,7 @@ vector<vector<int>> permute(vector<int>& ar) {
 int main() {
 	vector<int> ar = {1, 2, 3, 4};
 	auto p = permute(ar);
-	db(p);
-	db(p.size());
+	for (int i = 0; i < p.size(); i ++) {
+		db(i, p[i]);
+	}
 }
