@@ -10,29 +10,24 @@
  */
 class Solution {
 	public:
-		ListNode* deleteDuplicates(ListNode* l) {
-			l = new ListNode(-200, l);
+		ListNode* middleNode(ListNode* l) {
 			auto sol = [&] () {
-				ListNode* cur = l;
-				assert(cur != nullptr);
-				// size less than 3
-				if (cur->next == nullptr || cur->next->next == nullptr) return;
-				while (cur->next != nullptr && cur->next->next != nullptr) {
-					if (cur->next->val == cur->next->next->val) {
-						while (cur->next->next != nullptr && cur->next->val == cur->next->next->val) {
-							cur->next->next = cur->next->next->next;
-						}
-						cur->next = cur->next->next;
+				if (l->next == nullptr) return l;
+				ListNode *cur = l->next, *mid = l;
+				int i = 1, m = 0;
+				while (cur != nullptr) {
+					if (m < i / 2) {
+						m ++;
+						mid = mid->next;
+						assert(m == i / 2);
 					}
-					else {
-						cur = cur->next;
-					}
+					i ++;
+					cur = cur->next;
 				}
-
+				if (i % 2 == 0) mid = mid->next;
+				return mid;
 			};
-			sol();
-			l = l->next;
-
-			return l;
+			ListNode *r = sol();
+			return r;
 		}
 };
