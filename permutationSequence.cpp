@@ -10,7 +10,7 @@ string perm(vector<int> v, int k) {
 		return string(1, v[0] + '0');
 	}
 	int fac = fact(v.size());
-	int ind = k / (fac / v.size()) + 1; 
+	int ind = k / (fac / v.size()); 
 	string dig = string(1, v[ind] + '0');
 	db(fac, v, k, dig);
 	vector<int> nv = v;
@@ -19,6 +19,11 @@ string perm(vector<int> v, int k) {
 }
 
 int main() {
-	string res = perm({1, 4}, 1);
+	int n = 4;
+	vector<int> v;
+	for (int i = 1; i <= n; i ++) v.push_back(i);
+	int k = 13;
+	k --;
+	string res = perm(v, k);
 	puts(res.c_str());
 }
