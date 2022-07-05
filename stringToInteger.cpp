@@ -4,8 +4,7 @@ using namespace std;
 int main() {
 	string s = " -2147483649 hello world";
 	auto sol = [&] () {
-		s.erase(remove_if(s.begin(), s.end(), [] (char c) {
-					return c == ' ' || 'a' <= tolower(c) && tolower(c) <= 'z'; }), s.end());
+		s.erase(remove(s.begin(), s.end(), ' '), s.end());
 		if (count_if(s.begin(), s.end(), [] (char c) { return '0' <= c && c <= '9'; }) == 0) return 0;
 		if (s.empty()) return 0;
 		int sign = s[0] == '-' ? -1 : 1;
