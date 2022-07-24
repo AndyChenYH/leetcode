@@ -1,88 +1,46 @@
 #include <stdio.h>
 #include <algorithm>
+#include <string.h>
 using namespace std;
 
-// greedy
-
-int main() {
-	int ar[] = {3, 2, 1, 0, 4};
-	int N = sizeof(ar) / sizeof(int);
-	int last = N - 1;
-	for (int i = N - 1; 0 <= i; i --) {
-		int l = i + 1, r = i + ar[i];
-		if (l <= last && last <= r) {
-			last = i;
-		}
-	}
-	printf("%d\n", last);
-}
-
-/*
-// DP bottom up
 const int MN = 3e4;
+int N, ar[MN], bit[MN];
+int query(int i) {
+	i ++;
+	int sm = 0;
+	while (0 < i) {
+		sm += bit[i];
+		i -= i & -i;
+	}
+	return sm;
+}
+void update(int i, int val) {
+	i ++;
+	while (i <= N) {
+		bit[i] += val;
+		i += i & -i;
+	}
+}
+int range(int l, int r) {
+	if (l == 0) { return query(r); }
+	return query(r) - query(l - 1);
+}
 int main() {
-	int ar[] = {4, 2, 0, 0, 1, 1, 1, 0};
-	int N = sizeof(ar) / sizeof(int);
-	bool dp[MN] = {};
+	int t[] = {3, 2, 1, 0 ,4};
+	N = sizeof(t) / sizeof(int);
+	memcpy(ar, t, sizeof(t));
+	memset(bit, 0, sizeof(bit));
 	for (int i = N - 1; 0 <= i; i --) {
+		bool yes;
 		if (i == N - 1) {
-			dp[i] = true;
-			continue;
+			yes = true;
 		}
-		dp[i] = false;
-		for (int j = i + 1; j <= i + ar[i]; j ++) {
-			dp[i] |= dp[j];
+		else {
+			int l = i + 1, r = min(N - 1, i + ar[i]);
+			yes = range(l, r) != 0;
 		}
+		update(i, yes);
 	}
-	for (int i = 0; i < N; i ++) {
-		printf("%d ", dp[i]);
-	}
-	puts("");
+	printf("%d\n", query(0));
+	return 0;
 }
-*/
-
-/*
-// backtracking solution
-int main() {
-	int ar[] = {2, 3, 1, 1, 4};
-	int N = sizeof(ar) / sizeof(int);
-	function<bool(int)> can = [&] (int i) {
-		if (i == N - 1) return true;
-		for (int j = i + 1; j <= i + ar[i]; j ++) {
-			if (can(j)) return true;
-		}
-		return false;
-	};
-	printf("%d\n", can(0));
-}
-*/
-
-
-/*
-// DP + prefix sum solution
-const int MN = 3e4;
-int main() {
-	int ar[] = {3, 2, 2, 0, 2, 0, 5, 0};
-	int N = sizeof(ar) / sizeof(int);
-	bool dp[MN] = {};
-	int psum[MN] = {};
-	auto query = [&] (int a, int b) -> int {
-		if (b == N - 1) return psum[a];
-		return psum[a] - psum[b + 1];
-	};
-	psum[N - 1] = 1;
-	dp[N - 1] = true;
-	for (int i = N - 2; 0 <= i; i --) {
-		dp[i] = query(i + 1, min(N - 1, i + ar[i]));
-		psum[i] = dp[i] + psum[i + 1];
-	}
-	for (int i = 0; i < N; i ++) {
-		printf("%d ", dp[i]);
-	}
-	puts("");
-	
-}
-// dp[i] = any dp[j], for i < j < i + ar[i]
-*/
-
-
