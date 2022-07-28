@@ -21,6 +21,8 @@ int main() {
 }
 */
 
+/*
+// iterative solution based on recursive concept
 int main() {
 //	TreeNode* root = new TreeNode(1, nullptr, new TreeNode(2, new TreeNode(3), nullptr));
 	TreeNode* root = 
@@ -55,6 +57,43 @@ int main() {
 				st.push_back(n->right);
 				state = 0;
 			}
+		}
+	}
+}
+*/
+
+// morris traversal O(1) space
+int main() {
+	/*
+	TreeNode* root = 
+		new TreeNode(1,
+				new TreeNode(2, 
+					new TreeNode(4),
+					new TreeNode(5)),
+				new TreeNode(3)
+				);
+				*/
+	TreeNode* root = new TreeNode(1, new TreeNode(2), nullptr);
+	TreeNode* cur = root;
+	while (true) {
+		if (cur->left != nullptr) {
+			// reassign rightmost node of left subtree's right to current
+			TreeNode* cc = cur->left;
+			while (cc->right != nullptr) {
+				cc = cc->right;
+			}
+			cc->right = cur;
+			TreeNode* tmp = cur;
+			cur = cur->left;
+			tmp->left = nullptr;
+		}
+		else {
+			printf("%d\n", cur->val);
+			if (cur->right != nullptr) cur = cur->right;
+		}
+		if (cur->left == nullptr && cur->right == nullptr) {
+			printf("%d\n", cur->val);
+			break;
 		}
 	}
 }
