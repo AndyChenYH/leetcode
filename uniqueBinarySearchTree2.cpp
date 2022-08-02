@@ -3,6 +3,8 @@
 #include "TreeNode.cpp"
 using namespace std;
 
+/*
+// long and convoluted solution
 vector<vector<int>> permute(vector<int> ar) {
 	if (ar.size() == 1) return {ar};
 	vector<vector<int>> res;
@@ -60,4 +62,31 @@ int main() {
 			cout << bst << endl << endl;
 		}
 	}
+}
+*/
+
+vector<TreeNode*> gen(vector<int> ar) {
+	if (ar.empty()) return {nullptr};
+	vector<TreeNode*> res;
+	for (int i = 0; i < ar.size(); i ++) {
+		vector<TreeNode*> l = gen(vector<int>(ar.begin(), ar.begin() + i));
+		vector<TreeNode*> r = gen(vector<int>(ar.begin() + i + 1, ar.end()));
+		for (TreeNode* ll : l) {
+			for (TreeNode* rr : r) {
+				res.push_back(new TreeNode(ar[i], ll, rr));
+			}
+		}
+	}
+	return res;
+}
+int main() {
+	int n = 6;
+	vector<int> ar;
+	for (int i = 1; i <= n; i ++) ar.push_back(i);
+	db(gen(ar).size());
+	exit(0);
+	for (TreeNode* t : gen(ar)) {
+		cout << t << endl;
+	}
+
 }

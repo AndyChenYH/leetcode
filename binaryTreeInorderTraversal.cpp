@@ -64,7 +64,6 @@ int main() {
 
 // morris traversal O(1) space
 int main() {
-	/*
 	TreeNode* root = 
 		new TreeNode(1,
 				new TreeNode(2, 
@@ -72,8 +71,7 @@ int main() {
 					new TreeNode(5)),
 				new TreeNode(3)
 				);
-				*/
-	TreeNode* root = new TreeNode(1, new TreeNode(2), nullptr);
+//	TreeNode* root = new TreeNode(1, new TreeNode(2), nullptr);
 	TreeNode* cur = root;
 	while (true) {
 		if (cur->left != nullptr) {
