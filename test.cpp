@@ -1,33 +1,30 @@
-namespace std {
-	int MOD = 1e9 + 7;
-	template <typename A, typename H>
-		struct hash<pair<A, H>> {
-			int operator()( const pair<A, H>& k ) const {
-				long long res = 17;
-				res = ((res * 31) % MOD + hash<A>()(k.first)) % MOD;
-				res = ((res * 31) % MOD + hash<H>()(k.second)) % MOD;
-				return int(res % MOD);
-			}
-		};
-}
 
 class Solution {
 	public:
-		unordered_map<pair<int, int>, int> mem;
-		int gen(int lo, int hi) {
-			if (mem.find({lo, hi}) != mem.end()) return mem[{lo, hi}];
-			if (hi - lo == 0) return 1;
-			int res = 0;
-			for (int i = lo; i < hi; i ++) {
-				int l = gen(lo, i);
-				int r = gen(i + 1, hi);
-				res += l * r;
+		Node* cloneGraph(Node* node) {
+			if (node == nullptr) return nullptr;
+			// seen clones; use for setting neighbours
+			vector<Node*> seen(101, nullptr);
+			Node* clone = new Node(node->val);
+			list<pair<Node*, Node*>> st;
+			st.push_back({node, clone});
+			seen[node->val] = clone;
+			while (!st.empty()) {
+				auto fr = st.front(); st.pop_front();
+				Node *no = fr.first, *c = fr.second;
+				for (Node* nei : no->neighbors) {
+					// attach existing neighbours
+					if (seen[nei->val] != nullptr) {
+						c->neighbors.push_back(seen[nei->val]);
+						continue;
+					}
+					// create clone neighbour
+					Node* cn = new Node(nei->val);
+					c->neighbors.push_back(cn);
+					st.push_back({nei, cn});
+					seen[cn->val] = cn;
+				}
 			}
-			mem.insert({{lo, hi}, res});
-			return res;
-		}
-
-		int numTrees(int n) {
-			return gen(0, n);
+			return clone;
 		}
 };

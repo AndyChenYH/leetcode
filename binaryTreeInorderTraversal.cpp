@@ -62,6 +62,7 @@ int main() {
 }
 */
 
+/*
 // morris traversal O(1) space
 int main() {
 	TreeNode* root = 
@@ -95,3 +96,4 @@ int main() {
 		}
 	}
 }
+*/
