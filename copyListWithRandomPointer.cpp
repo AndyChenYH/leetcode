@@ -41,32 +41,20 @@ int main() {
 	Node* cur = n;
 	while (cur != nullptr) {
 		Node* nc = new Node(cur->val);
-		nc->random = cur->random;
-		cur->random = nc;
-		cur = cur->next;
+		nc->next = cur->next;
+		cur->next = nc;
+		cur = cur->next->next;
 	}
 	cur = n;
 	Node* res = n->random;
 	while (cur != nullptr) {
-		Node* tmp = cur->random->random;
-		// the random point is the clone
-		Node* clone = cur->random;
-		// setting next to the clone of next
-		if (cur->next == nullptr) clone->next = nullptr;
-		else clone->next = cur->next->random;
-		if (clone->random == nullptr) clone->random = nullptr;
-		else clone->random = clone->random->random;
-		cur->random = tmp;
+		// the next point is the clone
+		Node* clone = cur->next;
+		// setting up the random of clone
+		if (cur->random == nullptr) clone->random = nullptr;
+		else clone->random = cur->random->next;
 		cur = cur->next;
 	}
-	cur = n;
-	while (cur != nullptr) {
-		cur->random = nullptr;
-		cur = cur->next;
-	}
-	for (Node* cc = n; cc != nullptr; cc = cc->next) {
-		cc->val = 100;
-		if (cc->next != nullptr) cc->next->val = 300;
-	}
+
 	db(res);
 }
